@@ -20,8 +20,6 @@ function initChatBubbles() {
         chatBody.appendChild(responseYes);
         chatBody.appendChild(responseNo);
         chatBody.appendChild(loadingBubble);
-
-
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 
