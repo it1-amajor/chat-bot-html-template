@@ -1,5 +1,32 @@
-
 function initChatBubbles() {
+    let i = 0;
+
+    function createChatBubble(className, content) {
+        const bubble = document.createElement('div');
+        bubble.className = 'chat-bubble ' + className;
+        bubble.innerHTML = content;
+        return bubble;
+    }
+
+
+    function addChatBubblesToChatBody(domanda = 'Domanda Nuova') {
+        const chatBody = document.querySelector('.chat-screen .chat-body');
+        const newQuestion = createChatBubble('you', domanda);
+        const responseYes = createChatBubble('me', 'Si');
+        const responseNo = createChatBubble('me', 'No');
+        const loadingBubble = createLoadingBubble();
+
+        chatBody.appendChild(newQuestion);
+        chatBody.appendChild(responseYes);
+        chatBody.appendChild(responseNo);
+        chatBody.appendChild(loadingBubble);
+
+
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    addChatBubblesToChatBody("Come ti senti oggi?");
+
     let meChatBubbles = document.querySelectorAll('.chat-screen .chat-body .chat-bubble.me');
     let lastClickedBubble = null;
 
@@ -10,10 +37,16 @@ function initChatBubbles() {
     }
 
     function showAllBubbles() {
-        meChatBubbles.forEach(function (bubble) {
-            bubble.style.transition = 'opacity 0.6s';
-            bubble.style.opacity = 1;
-            bubble.style.display = 'table';
+        i--;
+        const youChatBubbles = document.querySelectorAll('.chat-screen .chat-body .chat-bubble.you');
+        youChatBubbles[youChatBubbles.length - 2].style.display = 'none';
+
+        Array.from(meChatBubbles).slice(-2).forEach(function (otherBubble) {
+            otherBubble.style.display = 'none';
+        });
+
+        Array.from(meChatBubbles).slice(-2).forEach(function (otherBubble) {
+            otherBubble.style.display = 'block';
         });
     }
 
@@ -21,7 +54,8 @@ function initChatBubbles() {
         if (lastClickedBubble === bubble) {
             resetStyles(bubble);
             lastClickedBubble = null;
-            showAllBubbles();
+            bubble.style.display = 'none'
+            showAllBubbles(bubble);
         } else {
             if (lastClickedBubble) {
                 resetStyles(lastClickedBubble);
@@ -38,14 +72,18 @@ function initChatBubbles() {
 
             lastClickedBubble = bubble;
 
-
+            Array.from(meChatBubbles).slice(0, -2).forEach(function (otherBubble) {
+                otherBubble.style.cursor = 'auto';
+                const clonedElement = otherBubble.cloneNode(true);
+                otherBubble.parentNode.replaceChild(clonedElement, otherBubble);
+            });
 
 
             Array.from(meChatBubbles).slice(-2).filter(function (bubble) {
                 return bubble !== lastClickedBubble;
             }).forEach(function (otherBubble) {
                 if (otherBubble !== bubble) {
-                    otherBubble.style.transition = 'opacity 0.6s';
+                    otherBubble.style.transition = 'opacity 0.4s';
                     otherBubble.style.opacity = 0;
                     setTimeout(function () {
                         otherBubble.style.display = 'none';
@@ -53,12 +91,6 @@ function initChatBubbles() {
                 }
             });
 
-            // Disable click option for all elements in meChatBubbles excluding last two
-            Array.from(meChatBubbles).forEach(function (bubble, index) {
-                if (index < meChatBubbles.length - 2) {
-                    bubble.removeEventListener('click', handleBubbleClick);
-                }
-            });
 
             document.querySelectorAll('.chat-screen .chat-body .chat-bubble.you').forEach(function (youBubble) {
                 const svgElement = youBubble.querySelector('svg');
@@ -66,29 +98,15 @@ function initChatBubbles() {
                     youBubble.remove();
                 }
             });
-
-            const chatBody = document.querySelector('.chat-screen .chat-body');
-            const newQuestion = createChatBubble('you', 'Domanda Nuova');
-            const responseYes = createChatBubble('me', 'Si');
-            const responseNo = createChatBubble('me', 'No');
-            const loadingBubble = createLoadingBubble();
-
-            chatBody.appendChild(newQuestion);
-            chatBody.appendChild(responseYes);
-            chatBody.appendChild(responseNo);
-            chatBody.appendChild(loadingBubble);
-
+            
+            i++;
+            addChatBubblesToChatBody("Domanda "+ i);
             // Add event listeners to the new chat bubbles
             initBubbleListeners();
         }
     }
 
-    function createChatBubble(className, content) {
-        const bubble = document.createElement('div');
-        bubble.className = 'chat-bubble ' + className;
-        bubble.innerHTML = content;
-        return bubble;
-    }
+
 
     function createLoadingBubble() {
         const loadingBubble = document.createElement('div');
