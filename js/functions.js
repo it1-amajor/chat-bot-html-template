@@ -36,7 +36,8 @@ function initChatBubbles() {
         bubble.style.color = '#888ea8';
     }
 
-    function showAllBubbles() {
+    function showAllBubbles(bubble) {
+        bubble.style.display = 'none'
         i--;
         const youChatBubbles = document.querySelectorAll('.chat-screen .chat-body .chat-bubble.you');
         youChatBubbles[youChatBubbles.length - 2].style.display = 'none';
@@ -46,7 +47,11 @@ function initChatBubbles() {
         });
 
         Array.from(meChatBubbles).slice(-2).forEach(function (otherBubble) {
-            otherBubble.style.display = 'block';
+            otherBubble.style.transition = 'opacity 0.2s';
+                    otherBubble.style.opacity = 1;
+                    setTimeout(function () {
+                        otherBubble.style.display = 'block';
+                    }, 200);
         });
     }
 
@@ -54,7 +59,6 @@ function initChatBubbles() {
         if (lastClickedBubble === bubble) {
             resetStyles(bubble);
             lastClickedBubble = null;
-            bubble.style.display = 'none'
             showAllBubbles(bubble);
         } else {
             if (lastClickedBubble) {
