@@ -1,7 +1,8 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const meChatBubbles = document.querySelectorAll('.chat-screen .chat-body .chat-bubble.me');
-    const lastTwoBubbles = Array.from(meChatBubbles).slice(-2);
+
+function initChatBubbles() {
+    let meChatBubbles = document.querySelectorAll('.chat-screen .chat-body .chat-bubble.me');
     let lastClickedBubble = null;
+
 
     function resetStyles(bubble) {
         bubble.style.background = 'linear-gradient(to right, #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF)';
@@ -10,53 +11,128 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function showAllBubbles() {
         meChatBubbles.forEach(function (bubble) {
-            bubble.style.transition = 'opacity 0.8s';
+            bubble.style.transition = 'opacity 0.6s';
             bubble.style.opacity = 1;
             bubble.style.display = 'table';
         });
     }
 
-    lastTwoBubbles.forEach(function (bubble) {
-        bubble.addEventListener('click', function () {
-            // Check if the clicked bubble is the same as the last clicked one
-            if (lastClickedBubble === bubble) {
-                resetStyles(bubble);
-                lastClickedBubble = null;
-                showAllBubbles();
-            } else {
-                // If it's a different bubble, undo the operation for the last clicked bubble (if any)
-                if (lastClickedBubble) {
-                    resetStyles(lastClickedBubble);
-                }
-
-                // Apply styles to the clicked chat bubble
-                bubble.style.background = '#940425';
-                bubble.style.color = 'white';
-
-                // Update the last clicked bubble
-                lastClickedBubble = bubble;
-
-                // Hide other chat bubbles with fade-out animation
-                lastTwoBubbles.forEach(function (otherBubble) {
-                    if (otherBubble !== bubble) {
-                        otherBubble.style.transition = 'opacity 0.8s';
-                        otherBubble.style.opacity = 0;
-                        setTimeout(function () {
-                            otherBubble.style.display = 'none';
-                        }, 500);
-                    }
-                });
+    function handleBubbleClick(bubble) {
+        if (lastClickedBubble === bubble) {
+            resetStyles(bubble);
+            lastClickedBubble = null;
+            showAllBubbles();
+        } else {
+            if (lastClickedBubble) {
+                resetStyles(lastClickedBubble);
             }
-        });
 
-        bubble.addEventListener('mouseenter', function () {
-            // Change cursor to hand on hover
-            bubble.style.cursor = 'pointer';
-        });
+            bubble.style.background = '#940425';
+            bubble.style.color = 'white';
 
-        bubble.addEventListener('mouseleave', function () {
-            // Reset cursor on leave
-            bubble.style.cursor = 'auto';
+            const youChatBubbles = document.querySelectorAll('.chat-screen .chat-body .chat-bubble.you');
+            const lastYouBubbleMessage = youChatBubbles.length > 1 ? youChatBubbles.item(youChatBubbles.length - 2).innerHTML : null;
+
+
+            console.log(lastYouBubbleMessage);
+
+            lastClickedBubble = bubble;
+
+
+
+
+            Array.from(meChatBubbles).slice(-2).filter(function (bubble) {
+                return bubble !== lastClickedBubble;
+            }).forEach(function (otherBubble) {
+                if (otherBubble !== bubble) {
+                    otherBubble.style.transition = 'opacity 0.6s';
+                    otherBubble.style.opacity = 0;
+                    setTimeout(function () {
+                        otherBubble.style.display = 'none';
+                    }, 500);
+                }
+            });
+
+            // Disable click option for all elements in meChatBubbles excluding last two
+            Array.from(meChatBubbles).forEach(function (bubble, index) {
+                if (index < meChatBubbles.length - 2) {
+                    bubble.removeEventListener('click', handleBubbleClick);
+                }
+            });
+
+            document.querySelectorAll('.chat-screen .chat-body .chat-bubble.you').forEach(function (youBubble) {
+                const svgElement = youBubble.querySelector('svg');
+                if (svgElement) {
+                    youBubble.remove();
+                }
+            });
+
+            const chatBody = document.querySelector('.chat-screen .chat-body');
+            const newQuestion = createChatBubble('you', 'Domanda Nuova');
+            const responseYes = createChatBubble('me', 'Si');
+            const responseNo = createChatBubble('me', 'No');
+            const loadingBubble = createLoadingBubble();
+
+            chatBody.appendChild(newQuestion);
+            chatBody.appendChild(responseYes);
+            chatBody.appendChild(responseNo);
+            chatBody.appendChild(loadingBubble);
+
+            // Add event listeners to the new chat bubbles
+            initBubbleListeners();
+        }
+    }
+
+    function createChatBubble(className, content) {
+        const bubble = document.createElement('div');
+        bubble.className = 'chat-bubble ' + className;
+        bubble.innerHTML = content;
+        return bubble;
+    }
+
+    function createLoadingBubble() {
+        const loadingBubble = document.createElement('div');
+        loadingBubble.className = 'chat-bubble you';
+        loadingBubble.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto;display: block;shape-rendering: auto;width: 43px;height: 20px;" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+            <circle cx="0" cy="44.1678" r="15" fill="#ffffff">
+                <animate attributeName="cy" calcMode="spline"
+                    keySplines="0 0.5 0.5 1;0.5 0 1 0.5;0.5 0.5 0.5 0.5"
+                    repeatCount="indefinite"
+                    values="57.5;42.5;57.5;57.5"
+                    keyTimes="0;0.3;0.6;1" dur="1s" begin="-0.6s"></animate>
+            </circle> <circle cx="45" cy="43.0965" r="15"
+                fill="#ffffff">
+                <animate attributeName="cy" calcMode="spline"
+                    keySplines="0 0.5 0.5 1;0.5 0 1 0.5;0.5 0.5 0.5 0.5"
+                    repeatCount="indefinite"
+                    values="57.5;42.5;57.5;57.5"
+                    keyTimes="0;0.3;0.6;1" dur="1s"
+                    begin="-0.39999999999999997s"></animate>
+            </circle> <circle cx="90" cy="52.0442" r="15"
+                fill="#ffffff">
+                <animate attributeName="cy" calcMode="spline"
+                    keySplines="0 0.5 0.5 1;0.5 0 1 0.5;0.5 0.5 0.5 0.5"
+                    repeatCount="indefinite"
+                    values="57.5;42.5;57.5;57.5"
+                    keyTimes="0;0.3;0.6;1" dur="1s"
+                    begin="-0.19999999999999998s"></animate>
+            </circle></svg>`;
+        return loadingBubble;
+    }
+
+    function initBubbleListeners() {
+        meChatBubbles = document.querySelectorAll('.chat-screen .chat-body .chat-bubble.me');
+        Array.from(meChatBubbles).slice(-2).forEach(function (bubble) {
+            bubble.addEventListener('click', function () {
+                handleBubbleClick(bubble);
+
+            });
         });
-    });
-});
+    }
+
+    // Initial event listeners setup
+    initBubbleListeners();
+}
+
+// Initialize chat bubbles
+initChatBubbles();
