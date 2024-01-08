@@ -111,12 +111,17 @@
 }
 .chat-screen .chat-body .chat-bubble.me {
     background-image: linear-gradient(to right, #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF);
-    color: #888ea8;
     border-radius: 15px 0px 15px 15px;
     float: right;
     align-self: flex-end;
     display: table;
 }
+
+.chat-bubble.me:hover{
+    background-color: red;
+}
+
+
 .chat-screen .chat-input {
     width: 100%;
     position: relative;
