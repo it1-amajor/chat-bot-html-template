@@ -1,5 +1,5 @@
 function initChatBubbles() {
-    let i = 0;
+    let flowPosition = 0;
 
     function createChatBubble(className, content) {
         const bubble = document.createElement('div');
@@ -8,22 +8,30 @@ function initChatBubbles() {
         return bubble;
     }
 
-
-    function addChatBubblesToChatBody(domanda = 'Domanda Nuova') {
+    function addChatBubblesToChatBody(domanda = 'Domanda Nuova', isNotFinal = true) {
         const chatBody = document.querySelector('.chat-screen .chat-body');
-        const newQuestion = createChatBubble('you', domanda);
-        const responseYes = createChatBubble('me', 'Si');
-        const responseNo = createChatBubble('me', 'No');
-        const loadingBubble = createLoadingBubble();
 
+        let newQuestion = createChatBubble('you', domanda);
+
+        if (!isNotFinal) {
+            newQuestion.style.width = '100%';
+            newQuestion.style.background = 'green';
+  
+        }
         chatBody.appendChild(newQuestion);
-        chatBody.appendChild(responseYes);
-        chatBody.appendChild(responseNo);
-        chatBody.appendChild(loadingBubble);
+
+        if (isNotFinal) {
+            const responseYes = createChatBubble('me', 'Si');
+            const responseNo = createChatBubble('me', 'No');
+            const loadingBubble = createLoadingBubble();
+            chatBody.appendChild(responseYes);
+            chatBody.appendChild(responseNo);
+            chatBody.appendChild(loadingBubble);
+        }
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    addChatBubblesToChatBody("Come ti senti oggi?");
+    addChatBubblesToChatBody(flowChart[flowPosition].domanda);
 
     let meChatBubbles = document.querySelectorAll('.chat-screen .chat-body .chat-bubble.me');
     let lastClickedBubble = null;
@@ -36,7 +44,6 @@ function initChatBubbles() {
 
     function showAllBubbles(bubble) {
         bubble.style.display = 'none'
-        i--;
         const youChatBubbles = document.querySelectorAll('.chat-screen .chat-body .chat-bubble.you');
         youChatBubbles[youChatBubbles.length - 2].style.display = 'none';
 
@@ -46,10 +53,10 @@ function initChatBubbles() {
 
         Array.from(meChatBubbles).slice(-2).forEach(function (otherBubble) {
             otherBubble.style.transition = 'opacity 0.2s';
-                    otherBubble.style.opacity = 1;
-                    setTimeout(function () {
-                        otherBubble.style.display = 'block';
-                    }, 200);
+            otherBubble.style.opacity = 1;
+            setTimeout(function () {
+                otherBubble.style.display = 'block';
+            }, 200);
         });
     }
 
@@ -66,13 +73,8 @@ function initChatBubbles() {
             bubble.style.background = '#940425';
             bubble.style.color = 'white';
 
-            const youChatBubbles = document.querySelectorAll('.chat-screen .chat-body .chat-bubble.you');
-            const lastYouBubbleMessage = youChatBubbles.length > 1 ? youChatBubbles.item(youChatBubbles.length - 2).innerHTML : null;
-
-
-            console.log(lastYouBubbleMessage);
-
             lastClickedBubble = bubble;
+            flowPosition = flowChart[flowPosition][bubble.innerHTML.trim().toLowerCase()];
 
             Array.from(meChatBubbles).slice(0, -2).forEach(function (otherBubble) {
                 otherBubble.style.cursor = 'auto';
@@ -100,14 +102,22 @@ function initChatBubbles() {
                     youBubble.remove();
                 }
             });
-            
-            i++;
-            addChatBubblesToChatBody("Domanda "+ i);
+
+
+            if (flowChart[flowPosition]) {
+                addChatBubblesToChatBody(flowChart[flowPosition].domanda);
+            }
+            else {
+                addChatBubblesToChatBody(flowPosition.esito, isNotFinal = false);
+            }
+
+
+
+
             // Add event listeners to the new chat bubbles
             initBubbleListeners();
         }
     }
-
 
 
     function createLoadingBubble() {
