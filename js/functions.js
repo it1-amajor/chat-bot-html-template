@@ -1,6 +1,7 @@
 const todayElement = document.getElementById('today');
 const todayDate = new Date();
 const formattedDate = todayDate.toLocaleDateString('it-IT');
+const colorResponseFinal = 'green'
 
 todayElement.textContent = formattedDate;
 
@@ -21,10 +22,11 @@ function initChatBubbles() {
         let newQuestion = createChatBubble('you', domanda);
 
         if (!isNotFinal) {
+            newQuestion.innerHTML = '🌟\n' + domanda;
             newQuestion.style.width = '100%';
             newQuestion.style.background = 'green';
         }
-        
+
         chatBody.appendChild(newQuestion);
 
         if (isNotFinal) {
@@ -35,7 +37,7 @@ function initChatBubbles() {
             chatBody.appendChild(responseNo);
             chatBody.appendChild(loadingBubble);
         }
-        
+
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 
@@ -161,7 +163,13 @@ function initChatBubbles() {
         meChatBubbles = document.querySelectorAll('.chat-screen .chat-body .chat-bubble.me');
         Array.from(meChatBubbles).slice(-2).forEach(function (bubble) {
             bubble.addEventListener('click', function () {
-                handleBubbleClick(bubble);        
+                const lastYouChatBubble = document.querySelector('.chat-screen .chat-body .chat-bubble.you:last-child');
+                if (lastYouChatBubble && lastYouChatBubble.style.background !== colorResponseFinal)
+                handleBubbleClick(bubble);
+                else{
+                    resetStyles(bubble);
+                    bubble.style.cursor = 'auto';
+                }
             });
         });
     }
