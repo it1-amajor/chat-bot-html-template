@@ -1,5 +1,12 @@
+const todayElement = document.getElementById('today');
+const todayDate = new Date();
+const formattedDate = todayDate.toLocaleDateString('it-IT');
+
+todayElement.textContent = formattedDate;
+
 function initChatBubbles() {
     let flowPosition = 0;
+    let flowPositionPreview = 0;
 
     function createChatBubble(className, content) {
         const bubble = document.createElement('div');
@@ -16,8 +23,8 @@ function initChatBubbles() {
         if (!isNotFinal) {
             newQuestion.style.width = '100%';
             newQuestion.style.background = 'green';
-  
         }
+        
         chatBody.appendChild(newQuestion);
 
         if (isNotFinal) {
@@ -28,6 +35,7 @@ function initChatBubbles() {
             chatBody.appendChild(responseNo);
             chatBody.appendChild(loadingBubble);
         }
+        
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 
@@ -38,7 +46,7 @@ function initChatBubbles() {
 
 
     function resetStyles(bubble) {
-        bubble.style.background = 'linear-gradient(to right, #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF, #FFFFFF)';
+        bubble.style.background = ' #FFFFFF';
         bubble.style.color = '#888ea8';
     }
 
@@ -58,6 +66,7 @@ function initChatBubbles() {
                 otherBubble.style.display = 'block';
             }, 200);
         });
+        flowPosition = flowPositionPreview;
     }
 
     function handleBubbleClick(bubble) {
@@ -70,10 +79,8 @@ function initChatBubbles() {
                 resetStyles(lastClickedBubble);
             }
 
-            bubble.style.background = '#940425';
-            bubble.style.color = 'white';
-
             lastClickedBubble = bubble;
+            flowPositionPreview = flowPosition;
             flowPosition = flowChart[flowPosition][bubble.innerHTML.trim().toLowerCase()];
 
             Array.from(meChatBubbles).slice(0, -2).forEach(function (otherBubble) {
@@ -154,8 +161,7 @@ function initChatBubbles() {
         meChatBubbles = document.querySelectorAll('.chat-screen .chat-body .chat-bubble.me');
         Array.from(meChatBubbles).slice(-2).forEach(function (bubble) {
             bubble.addEventListener('click', function () {
-                handleBubbleClick(bubble);
-
+                handleBubbleClick(bubble);        
             });
         });
     }
