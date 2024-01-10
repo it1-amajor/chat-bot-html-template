@@ -52,7 +52,7 @@ function initChatBubbles() {
         });
 
         Array.from(meChatBubbles).slice(-2).forEach(function (otherBubble) {
-            otherBubble.style.transition = 'opacity 0.2s';
+            otherBubble.style.transition = 'opacity 0.1s';
             otherBubble.style.opacity = 1;
             setTimeout(function () {
                 otherBubble.style.display = 'block';
@@ -87,11 +87,11 @@ function initChatBubbles() {
                 return bubble !== lastClickedBubble;
             }).forEach(function (otherBubble) {
                 if (otherBubble !== bubble) {
-                    otherBubble.style.transition = 'opacity 0.4s';
+                    otherBubble.style.transition = 'opacity 0.1s';
                     otherBubble.style.opacity = 0;
                     setTimeout(function () {
                         otherBubble.style.display = 'none';
-                    }, 500);
+                    }, 200);
                 }
             });
 

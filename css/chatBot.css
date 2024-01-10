@@ -4,7 +4,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: 80%;
-    height: 75vh; /* Set the desired height (here, 80% of the viewport height) */
+    height: 70vh; /* Set the desired height (here, 80% of the viewport height) */
     box-sizing: border-box;
     border-radius: 15px;
     box-shadow: 0 15px 20px rgba(0, 0, 0, 0.1);
