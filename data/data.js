@@ -39,7 +39,7 @@ flowChart = [
         "no": 1
     },
     {
-        "domanda": "La situazione non positiva (o non come da aspettativa) è presente da piu' di 3 Mesi?",
+        "domanda": "La situazione non positiva (o non come da aspettativa) è presente da più di 3 Mesi?",
         "si": 2,
         "no": 6,
     },
