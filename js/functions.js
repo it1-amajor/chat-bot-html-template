@@ -23,7 +23,7 @@ function initChatBubbles() {
         if (!isNotFinal) {
             newQuestion.innerHTML ="ESITO: <br>"+ emoticon+' ' + domanda;
             newQuestion.style.width = '100%';
-            if(color==='Orange' ||color==='Yellow')
+            if(color==='Yellow')
             newQuestion.style.color='Black';
             newQuestion.style.background = color;
         }
