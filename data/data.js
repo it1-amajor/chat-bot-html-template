@@ -1,22 +1,34 @@
-esitiFlow = [
-    {
-        "esito": "Bollino Verde",
-    },
-    {
-        "esito": "Bollino Rosso"
-    },
-    {
-        "esito": "Bollino Giallo"
-    },
-    {
-        "esito": "Bollino Blu",
-    },
-    {
-        "esito":"Bollino Arancione"
-    },
-    {
-        "esito":"Bollino Nero"
-    }
+const esitiFlow = [
+  {
+    "esito": "Bollino Verde",
+    "emoticon": "🟢",
+    "colore": "Green"
+  },
+  {
+    "esito": "Bollino Rosso",
+    "emoticon": "🔴",
+    "colore": "Red"
+  },
+  {
+    "esito": "Bollino Giallo",
+    "emoticon": "🟡",
+    "colore": "Yellow"
+  },
+  {
+    "esito": "Bollino Blu",
+    "emoticon": "🔵",
+    "colore": "Blue"
+  },
+  {
+    "esito": "Bollino Arancione",
+    "emoticon": "🟠",
+    "colore": "Orange"
+  },
+  {
+    "esito": "Bollino Nero",
+    "emoticon": "⚫️",
+    "colore": "Black"
+  }
 ];
 
 

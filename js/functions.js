@@ -16,15 +16,15 @@ function initChatBubbles() {
         return bubble;
     }
 
-    function addChatBubblesToChatBody(domanda = 'Domanda Nuova', isNotFinal = true) {
+    function addChatBubblesToChatBody(domanda = 'Domanda Nuova', isNotFinal = true,emoticon = null, color = null) {
         const chatBody = document.querySelector('.chat-screen .chat-body');
 
         let newQuestion = createChatBubble('you', domanda);
 
         if (!isNotFinal) {
-            newQuestion.innerHTML = '🌟\n' + domanda;
+            newQuestion.innerHTML ="ESITO: <br>"+ emoticon+' ' + domanda;
             newQuestion.style.width = '100%';
-            newQuestion.style.background = 'green';
+            newQuestion.style.background = color;
         }
 
         chatBody.appendChild(newQuestion);
@@ -117,7 +117,7 @@ function initChatBubbles() {
                 addChatBubblesToChatBody(flowChart[flowPosition].domanda);
             }
             else {
-                addChatBubblesToChatBody(flowPosition.esito, isNotFinal = false);
+                addChatBubblesToChatBody(flowPosition.esito, isNotFinal = false,flowPosition.emoticon,flowPosition.colore);
             }
 
 
