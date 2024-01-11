@@ -1,7 +1,6 @@
 const todayElement = document.getElementById('today');
 const todayDate = new Date();
 const formattedDate = todayDate.toLocaleDateString('it-IT');
-const colorResponseFinal = 'green'
 
 todayElement.textContent = formattedDate;
 
@@ -24,6 +23,8 @@ function initChatBubbles() {
         if (!isNotFinal) {
             newQuestion.innerHTML ="ESITO: <br>"+ emoticon+' ' + domanda;
             newQuestion.style.width = '100%';
+            if(color==='Orange' ||color==='Yellow')
+            newQuestion.style.color='Black';
             newQuestion.style.background = color;
         }
 
@@ -164,7 +165,7 @@ function initChatBubbles() {
         Array.from(meChatBubbles).slice(-2).forEach(function (bubble) {
             bubble.addEventListener('click', function () {
                 const lastYouChatBubble = document.querySelector('.chat-screen .chat-body .chat-bubble.you:last-child');
-                if (lastYouChatBubble && lastYouChatBubble.style.background !== colorResponseFinal)
+                if (lastYouChatBubble && !lastYouChatBubble.innerText.includes("Bollino"))
                 handleBubbleClick(bubble);
                 else{
                     resetStyles(bubble);
