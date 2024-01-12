@@ -95,7 +95,7 @@ flowChart = [
         "si": 12,
         "no": esitiFlow[2],
     },
-    {   //13
+    {   //12
         "domanda": "Il budget 2023 che ti eri dato è stato raggiunto ?",
         "si": esitiFlow[0],
         "no": esitiFlow[1]
@@ -108,7 +108,7 @@ flowChart = [
      {  //14
         "domanda": "Ritieni di avere sbagliato la scelta della persona?",
         "si": esitiFlow[3],
-        "no": esitiFlow[4]
+        "no": esitiFlow[5]
     }
 ];
 
