@@ -9,10 +9,18 @@
 
 .chat-screen .chat-header .chat-header-title {
     display: inline-block;
-    width: calc(100% - 50px);
+    width: 100%;
     color: #fff;
     font-size: 14px;
 }
+
+.chat-screen .chat-header .chat-header-title img{
+    height: 80px;
+    padding: 2px;
+    margin:auto;
+    display: block;
+}
+ 
 
 .chat-screen .chat-header .chat-header-option {
     display: inline-block;
