@@ -14,11 +14,20 @@
     font-size: 14px;
 }
 
-.chat-screen .chat-header .chat-header-title img{
-    height: 80px;
-    padding: 2px;
-    margin:auto;
+.chat-header img{
     display: block;
+    width: 60%;
+    height: 70px;
+    margin: auto !important;
+}
+
+.privacy-link {
+    margin-left: 2px; 
+}
+
+.privacy-link a{
+    color: red !important;
+    text-decoration: underline;
 }
  
 
@@ -40,10 +49,11 @@
 }
 
 .chat-screen .chat-mail input.form-control {
-    border-radius: 30px;
+    border-radius: 5px;
     border: 1px solid #e1e1e1;
     color: #3b3f5c;
     font-size: 14px;
+    height: 40px;
 
 }
 

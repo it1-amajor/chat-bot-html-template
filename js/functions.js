@@ -179,5 +179,51 @@ function initChatBubbles() {
     initBubbleListeners();
 }
 
+
+document.getElementById('myForm').addEventListener('submit', function(event) {
+    // Prevent form submission
+    event.preventDefault();
+    
+    // Clear previous error messages
+    const errorMessages = document.querySelectorAll('.error-message');
+    errorMessages.forEach(function(message) {
+        message.style.display = 'none';
+    });
+    
+    // Get input values
+    const nominativo = document.getElementById('nominativo');
+    const ragioneSociale = document.getElementById('ragione-sociale');
+    
+    let isValid = true;
+
+    // Validate Nominativo
+    if (nominativo.value.trim() === '') {
+        isValid = false;
+        nominativo.classList.add('is-invalid');
+        document.getElementById('nominativoError').style.display = 'block';
+    } else {
+        nominativo.classList.remove('is-invalid');
+    }
+
+    // Validate Ragione Sociale
+    if (ragioneSociale.value.trim() === '') {
+        isValid = false;
+        ragioneSociale.classList.add('is-invalid');
+        document.getElementById('ragioneSocialeError').style.display = 'block';
+    } else {
+        ragioneSociale.classList.remove('is-invalid');
+    }
+
+    // If valid, submit the form
+    if (isValid) {
+       
+            $('.chat-mail').addClass('hide');
+            $('.chat-body').removeClass('hide');
+            $('.chat-input').removeClass('hide');
+            $('.chat-header-option').removeClass('hide');
+        
+    }
+});
+
 // Initialize chat bubbles
 initChatBubbles();

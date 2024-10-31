@@ -6,7 +6,8 @@
         <meta name="viewport"
             content="width=device-width, initial-scale=1.1, maximum-scale=1.0, shrink-to-fit=yes">
         <title>Amajor Chatbot</title>
-        <meta name="description" content="Chatbot Amajor con risposte dinamiche" />
+        <meta name="description"
+            content="Chatbot Amajor con risposte dinamiche" />
         <meta name="keywords"
             content="Esplora il nostro innovativo chatbot, progettato per interagire dinamicamente con gli utenti. Grazie alle sue risposte intelligenti e personalizzate, offre un'esperienza conversazionale unica, semplificando la tua interazione online con informazioni tempestive e supporto basato sul contesto." />
         <meta name="author" content="css3transition" />
@@ -40,40 +41,58 @@
         <!-- Chat bot UI start -->
         <div class="chat-screen">
             <div class="chat-header">
-                <div class="chat-header-title">
-                    <img src="img/amajor-logo.svg" alt="">
-                </div>
-                
+                <img src="img/amajor-logo.svg" alt>
             </div>
             <div class="chat-mail">
                 <div class="row">
                     <div class="col-md-12 text-center mb-2">
-                        <p>Compila questo assessment e scopri di più sulla tua area commerciale!</p>
+                        <p>Compila questo assessment e scopri di più sulla tua
+                            area commerciale!</p>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <input type="text" class="form-control"
-                                placeholder="Nominativo:" required>
+                <form id="myForm">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" id="nominativo"
+                                    class="form-control"
+                                    placeholder="Nominativo:" required>
+                                <div class="error-message" id="nominativoError"
+                                    style="display: none; color: red;">This
+                                    field is required.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" id="ragione-sociale"
+                                    class="form-control"
+                                    placeholder="Ragione Sociale:" required>
+                                <div class="error-message"
+                                    id="ragioneSocialeError"
+                                    style="display: none; color: red;">This
+                                    field is required.</div>
+                            </div>
+                        </div>
+
+                            <div class="col-md-12 privacy-link" >
+                                <div class="form-group form-check">
+                                    <input type="checkbox" id="privacyPolicy" class="form-check-input" required>
+                                    <label for="privacyPolicy" class="form-check-label">Accetto le condizioni di <a href="https://www.amajorsb.com/wp-content/uploads/2023/07/Informativa-Online-Potenziale-Cliente-2F-O421246G-.pdf">Privacy</a></label>
+                                </div>
+                            </div>
+
+                        <div class="col-md-12">
+                            <button type="submit"
+                                class="btn btn-primary btn-rounded btn-block">Iniziamo</button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="powered-by">Powered by Amajor</div>
                         </div>
                     </div>
+                </form>
 
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <input type="text" class="form-control"
-                                placeholder="Ragione Sociale:" required>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-12">
-                        <button class="btn btn-primary btn-rounded btn-block">Iniziamo</button>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="powered-by">Powered by Amajor</div>
-                    </div>
-                </div>
             </div>
             <div class="chat-body hide">
                 <div class="chat-start" id="today"></div>
@@ -142,12 +161,6 @@
             $(this).children('svg').toggleClass('animate');
             $('.chat-screen').toggleClass('show-chat');
         });
-        $('.chat-mail button').click(function () {
-            $('.chat-mail').addClass('hide');
-            $('.chat-body').removeClass('hide');
-            $('.chat-input').removeClass('hide');
-            $('.chat-header-option').removeClass('hide');
-        });
         $('.end-chat').click(function () {
             $('.chat-body').addClass('hide');
             $('.chat-input').addClass('hide');
@@ -157,8 +170,8 @@
     });
 
 </script>
-<script src="data/data.js"></script>
-<script src="js/functions.js"></script>
+        <script src="data/data.js"></script>
+        <script src="js/functions.js"></script>
     </body>
 
 </html>
