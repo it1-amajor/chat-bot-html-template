@@ -1,8 +1,47 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyAtawCQW5dLx-ScTIb3fyRW0n6UimMvhPQ",
+    authDomain: "cvtest-b12d0.firebaseapp.com",
+    projectId: "cvtest-b12d0",
+    storageBucket: "cvtest-b12d0.firebasestorage.app",
+    messagingSenderId: "548869568345",
+    appId: "1:548869568345:web:146550422c722f49b87e48"
+};
+
+const app = firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 const todayElement = document.getElementById('today');
 const todayDate = new Date();
 const formattedDate = todayDate.toLocaleDateString('it-IT');
 
 todayElement.textContent = formattedDate;
+
+
+
+// Assuming Firebase is already initialized elsewhere
+function saveData(chatContent, newQuestion) {
+    // Ensure the chat content is not empty before saving
+    if (!chatContent || chatContent.trim() === "") {
+        console.error("No chat content to save");
+        return;
+    }
+
+    // Use the correct database URL as mentioned in the error message
+    const dbRef = firebase.app().database("https://cvtest-b12d0-default-rtdb.europe-west1.firebasedatabase.app").ref('compilazioni').push();
+
+    dbRef.set({
+        'nominiativo': document.getElementById('nominativo').value,
+        'ragione-sociale': document.getElementById('ragione-sociale').value,
+        'esito': newQuestion,
+        'chatBody': chatContent
+    })
+        .then(() => {
+
+        })
+        .catch(error => {
+        });
+}
+
+
 
 function initChatBubbles() {
     let flowPosition = 0;
@@ -15,21 +54,28 @@ function initChatBubbles() {
         return bubble;
     }
 
-    function addChatBubblesToChatBody(domanda = 'Domanda Nuova', isNotFinal = true,emoticon = null, color = null) {
+    function addChatBubblesToChatBody(domanda = 'Domanda Nuova', isNotFinal = true, emoticon = null, color = null) {
         const chatBody = document.querySelector('.chat-screen .chat-body');
 
         let newQuestion = createChatBubble('you', domanda);
 
+        // If the chat is final, modify the bubble and save the chat body (text only)
         if (!isNotFinal) {
-            newQuestion.innerHTML ="ESITO: <br>"+ emoticon+' ' + domanda;
+            newQuestion.innerHTML = "ESITO: <br>" + emoticon + ' ' + domanda;
             newQuestion.style.width = '100%';
-            if(color==='Yellow')
-            newQuestion.style.color='Black';
+
+            if (color === 'Yellow') {
+                newQuestion.style.color = 'Black';
+            }
             newQuestion.style.background = color;
+
+            // Save chat content as plain text (innerText)
+            saveData(chatBody.innerText, domanda);
         }
 
         chatBody.appendChild(newQuestion);
 
+        // If not final, add response bubbles and loading animation
         if (isNotFinal) {
             const responseYes = createChatBubble('me', 'Si');
             const responseNo = createChatBubble('me', 'No');
@@ -39,8 +85,10 @@ function initChatBubbles() {
             chatBody.appendChild(loadingBubble);
         }
 
+        // Scroll to the bottom of the chat body
         chatBody.scrollTop = chatBody.scrollHeight;
     }
+
 
     addChatBubblesToChatBody(flowChart[flowPosition].domanda);
 
@@ -118,7 +166,7 @@ function initChatBubbles() {
                 addChatBubblesToChatBody(flowChart[flowPosition].domanda);
             }
             else {
-                addChatBubblesToChatBody(flowPosition.esito, isNotFinal = false,flowPosition.emoticon,flowPosition.colore);
+                addChatBubblesToChatBody(flowPosition.esito, isNotFinal = false, flowPosition.emoticon, flowPosition.colore);
             }
 
 
@@ -166,8 +214,8 @@ function initChatBubbles() {
             bubble.addEventListener('click', function () {
                 const lastYouChatBubble = document.querySelector('.chat-screen .chat-body .chat-bubble.you:last-child');
                 if (lastYouChatBubble && !lastYouChatBubble.innerText.includes("Bollino"))
-                handleBubbleClick(bubble);
-                else{
+                    handleBubbleClick(bubble);
+                else {
                     resetStyles(bubble);
                     bubble.style.cursor = 'auto';
                 }
@@ -180,20 +228,20 @@ function initChatBubbles() {
 }
 
 
-document.getElementById('myForm').addEventListener('submit', function(event) {
+document.getElementById('myForm').addEventListener('submit', function (event) {
     // Prevent form submission
     event.preventDefault();
-    
+
     // Clear previous error messages
     const errorMessages = document.querySelectorAll('.error-message');
-    errorMessages.forEach(function(message) {
+    errorMessages.forEach(function (message) {
         message.style.display = 'none';
     });
-    
+
     // Get input values
     const nominativo = document.getElementById('nominativo');
     const ragioneSociale = document.getElementById('ragione-sociale');
-    
+
     let isValid = true;
 
     // Validate Nominativo
@@ -216,12 +264,12 @@ document.getElementById('myForm').addEventListener('submit', function(event) {
 
     // If valid, submit the form
     if (isValid) {
-       
-            $('.chat-mail').addClass('hide');
-            $('.chat-body').removeClass('hide');
-            $('.chat-input').removeClass('hide');
-            $('.chat-header-option').removeClass('hide');
-        
+
+        $('.chat-mail').addClass('hide');
+        $('.chat-body').removeClass('hide');
+        $('.chat-input').removeClass('hide');
+        $('.chat-header-option').removeClass('hide');
+
     }
 });
 
