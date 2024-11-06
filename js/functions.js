@@ -68,9 +68,6 @@ function initChatBubbles() {
                 newQuestion.style.color = 'Black';
             }
             newQuestion.style.background = color;
-
-            // Save chat content as plain text (innerText)
-            saveData(chatBody.innerText, domanda);
         }
 
         chatBody.appendChild(newQuestion);
@@ -83,6 +80,11 @@ function initChatBubbles() {
             chatBody.appendChild(responseYes);
             chatBody.appendChild(responseNo);
             chatBody.appendChild(loadingBubble);
+        }
+        else{
+           let auxText = chatBody.innerText.split("ESITO:");
+            const textToSend = auxText[0].slice(0, -6) + lastClickedBubble.innerText + auxText[1];
+            saveData(textToSend, domanda);
         }
 
         // Scroll to the bottom of the chat body
